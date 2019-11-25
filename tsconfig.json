@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "dist",
+    "sourceMap": true,
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": false,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": false,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "jest",
+      "node"
+    ],
+    "paths": {
+      "@jsapi/core": [
+        "packages/core/lib/index.ts"
+      ],
+      "@jsapi/dingtalk": [
+        "packages/dingtalk/lib/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "packages/global.d.ts",
+    "packages/**/lib",
+    "packages/**/__test__"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

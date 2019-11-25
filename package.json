@@ -1,0 +1,66 @@
+{
+	"license": "MIT",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"build": "kuai build",
+		"lint": "prettier --write packages/**/lib/**/*.{ts,tsx,js,jsx} && eslint --fix packages/**/lib/**/*.{ts,tsx,js,jsx}",
+		"test": "jest"
+	},
+	"devDependencies": {
+		"@babel/core": "7.7.4",
+		"@babel/plugin-proposal-class-properties": "7.7.4",
+		"@babel/plugin-syntax-jsx": "7.7.4",
+		"@babel/plugin-transform-react-jsx": "7.7.4",
+		"@babel/preset-env": "7.7.4",
+		"@commitlint/cli": "8.2.0",
+		"@commitlint/config-conventional": "8.2.0",
+		"@types/jest": "24.0.23",
+		"@types/node": "12.12.12",
+		"@typescript-eslint/eslint-plugin": "2.8.0",
+		"@typescript-eslint/parser": "2.8.0",
+		"babel-plugin-macros": "2.7.1",
+		"babel-plugin-transform-async-to-promises": "0.8.15",
+		"eslint": "6.7.0",
+		"eslint-config-prettier": "6.7.0",
+		"eslint-plugin-prettier": "3.1.1",
+		"husky": "3.1.0",
+		"jest": "24.9.0",
+		"lerna": "^3.18.3",
+		"lint-staged": "9.4.3",
+		"lodash.merge": "4.6.2",
+		"prettier": "1.19.1",
+		"rollup": "1.27.4",
+		"rollup-plugin-alias": "2.2.0",
+		"rollup-plugin-babel": "4.3.3",
+		"rollup-plugin-commonjs": "10.1.0",
+		"rollup-plugin-gzip": "2.2.0",
+		"rollup-plugin-json": "4.0.0",
+		"rollup-plugin-node-resolve": "5.2.0",
+		"rollup-plugin-terser": "5.1.2",
+		"rollup-plugin-typescript2": "0.25.2",
+		"ts-jest": "24.2.0",
+		"typescript": "3.7.2"
+	},
+	"lint-staged": {
+		"packages/**/lib/**/*.{ts,tsx,js,jsx}": [
+			"prettier --write",
+			"eslint --fix",
+			"git add"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"post-merge": "kuai doctor pkgV",
+			"pre-commit": "lint-staged",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"kuai": {
+		"repo": "buns-li/kuai-tpls",
+		"branch": "master"
+	},
+	"name": "jsapi"
+}

@@ -1,0 +1,27 @@
+{
+	"name": "@jsapi/core",
+	"version": "1.0.0",
+	"license": "MIT",
+	"module": "dist/core.esm.js",
+	"jsnext": "dist/core.mjs",
+	"main": "dist/core.cjs.js",
+	"unpkg": "dist/core.min.js",
+	"browser": "dist/core.js",
+	"types": "dist/core.d.ts",
+	"kuai": {
+		"buildOptions": {
+			"formats": [
+				"esm",
+				"cjs",
+				"global",
+				"esm-browser"
+			],
+			"external": null,
+			"onlyProd": false
+		}
+	},
+	"keywords": [
+		"@jsapi",
+		"core"
+	]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@jsapi/dingtalk",
+  "version": "1.0.0",
+  "license": "MIT",
+  "module": "dist/dingtalk.esm.js",
+  "jsnext": "dist/dingtalk.mjs",
+  "main": "dist/dingtalk.cjs.js",
+  "unpkg": "dist/dingtalk.min.js",
+  "browser": "dist/dingtalk.js",
+  "types": "dist/dingtalk.d.ts",
+  "kuai": {
+    "buildOptions": {
+      "formats": [
+        "esm",
+        "cjs",
+        "global",
+        "esm-browser"
+      ],
+      "external": {
+				"global,esm-browser":"dingtalk-jsapi"
+			},
+			"globals":{
+				"dingtalk-jsapi":"dd"
+			},
+      "onlyProd": false
+    }
+  },
+  "dependencies": {
+    "@jsapi/core": "1.0.0",
+    "dingtalk-jsapi": "2.8.11"
+  },
+  "keywords": [
+    "@jsapi",
+    "dingtalk"
+  ]
+}
