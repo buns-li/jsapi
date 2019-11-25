@@ -193,13 +193,13 @@ export enum ShareScopeItem {
 	 */
 	weibo = "weibo",
 	/**
-	 * 党建App好友
+	 * App内置好友模块
 	 */
-	djChat = "djChat",
+	selfChat = "selfChat",
 	/**
-	 *  党建App红土地
+	 *  App内置朋友圈
 	 */
-	djMoment = "djMoment",
+	selfMoment = "selfMoment",
 	/**
 	 * 复制链接
 	 */
