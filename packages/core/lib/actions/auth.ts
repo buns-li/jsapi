@@ -57,7 +57,7 @@ export interface AuthParams {
 	 * @type {string[]}
 	 * @memberof AuthParams
 	 */
-	jsApiList: string[];
+	jsApiList: "*" | string[];
 	/**
 	 * 扩展参数
 	 *

@@ -3,13 +3,13 @@ import JSApi, { AuthParams, HostInvokePayload, includes } from "@jsapi/core";
 import * as dd from "dingtalk-jsapi";
 import actionMap, { DingTalkErrorInfo } from "./adapter";
 
-let allowJSApiList: string[] = [];
+let allowJSApiList: "*" | string[] = [];
 
 JSApi.config = function config(params: AuthParams): void {
 	const extra = params.extra || {};
 
 	dd.config({
-		jsApiList: params.jsApiList,
+		jsApiList: params.jsApiList === "*" ? [] : params.jsApiList,
 		nonceStr: params.nonceStr,
 		signature: params.signature,
 		timeStamp: params.timeStamp,
@@ -17,12 +17,12 @@ JSApi.config = function config(params: AuthParams): void {
 		corpId: extra.corpId,
 		type: extra.type
 	});
-	allowJSApiList = params.jsApiList.slice();
+
+	allowJSApiList = params.jsApiList === "*" ? [] : params.jsApiList.slice();
 };
 
 JSApi.callHost = function(payload: HostInvokePayload): void {
-	if (includes(allowJSApiList, payload.action)) {
-		// TODO: 钉钉Action和JSApiaction的映射
+	if (allowJSApiList === "*" || includes(allowJSApiList, payload.action)) {
 		actionMap[payload.action](payload);
 	} else {
 		JSApi.invokeH5(
