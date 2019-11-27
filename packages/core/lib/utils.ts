@@ -20,43 +20,6 @@ export const isFunction = isType("Function");
 export const isString = isType("String");
 
 /**
- *  获取当前浏览器的基础信息: 内核、版本、操作系统
- */
-export const ua = navigator.userAgent.toLowerCase();
-
-/**
- * 是否是iphone客户端
- */
-export const isIPhone = ~ua.indexOf("iphone");
-
-/**
- * 是否是Android客户端
- */
-export const isAndroid = ~ua.indexOf("android");
-
-/**
- * 是否是IOS7以上的版本
- *
- * @export
- * @returns {boolean}
- */
-export function canUseIOSWK(): boolean {
-	if (!isIPhone) return false;
-
-	const matchArr = ua.match(/os [\d._]+/gi);
-
-	let version = matchArr && matchArr.length ? matchArr[0] : null;
-
-	version = (version + "").replace(/[^0-9|_.]/gi, "");
-
-	if (~version.indexOf("_")) {
-		return parseInt(version.split("_")[0], 10) > 7;
-	}
-
-	return false;
-}
-
-/**
  * converting a string to a `camel-case`
  *
  * @param {string} input a string input value
