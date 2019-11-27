@@ -1,6 +1,6 @@
 "use strict";
 
-import { toCamelCase, includes, canUseIOSWK, isIPhone, isAndroid } from "../lib/utils";
+import { toCamelCase, includes, isFunction, isString } from "../lib/utils";
 
 describe("@jsapi/core", () => {
 	it(" `toCamelCase` ", () => {
@@ -12,6 +12,9 @@ describe("@jsapi/core", () => {
 
 		result = toCamelCase("view-goto");
 		expect(result).toBe("view-goto");
+
+		result = toCamelCase("");
+		expect(result).toBe("");
 	});
 
 	it(" `includes` ", () => {
@@ -33,13 +36,25 @@ describe("@jsapi/core", () => {
 		expect(result).toBe(true);
 	});
 
-	it(" `canUseIOSWK` ", () => {
-		// 修改userAgent,可详见根目录下的jest.config.js->"testEnvironmentOptions"
+	it(`isString`, () => {
+		expect(isString("1")).toBe(true);
+		expect(isString(1)).toBe(false);
+		expect(isString({})).toBe(false);
+		expect(isString(true)).toBe(false);
+		expect(isString(1.1)).toBe(false);
+		expect(isString(() => {})).toBe(false);
+		expect(isString(null)).toBe(false);
+		expect(isString(undefined)).toBe(false);
+	});
 
-		expect(isIPhone).not.toBe(0);
-		expect(isAndroid).toBe(0);
-
-		const result = canUseIOSWK();
-		expect(result).toBe(true);
+	it(`isFunction`, () => {
+		expect(isFunction("1")).toBe(false);
+		expect(isFunction(1)).toBe(false);
+		expect(isFunction({})).toBe(false);
+		expect(isFunction(true)).toBe(false);
+		expect(isFunction(1.1)).toBe(false);
+		expect(isFunction(() => {})).toBe(true);
+		expect(isFunction(null)).toBe(false);
+		expect(isFunction(undefined)).toBe(false);
 	});
 });
