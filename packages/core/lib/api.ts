@@ -51,6 +51,8 @@ export function notifyHost(action: string, params: KV<any>, cb?: Function): void
 		callbackid
 	};
 
+	api.debug && api.debug(action, payload);
+
 	api.callHost && api.callHost(payload);
 }
 
@@ -70,7 +72,7 @@ export function invokeH5(actionOrCbId: string, dataJSON?: string, err?: Error): 
 
 	if (!cbValue) return;
 
-	api.onH5InvokeDebug && api.onH5InvokeDebug(actionOrCbId, dataJSON, err);
+	api.debug && api.debug(actionOrCbId, dataJSON, err);
 
 	let data = dataJSON || "";
 	if (cbValue.t && dataJSON) {
@@ -132,7 +134,7 @@ export function bindListener(action: string): void {
 
 	const realAction = actions.join(".");
 
-	if (!realAction || (cbBuckets[realAction] && !cbBuckets[realAction].t)) return; // 防止只传递"on"的影响 以及禁用监听覆盖
+	if (!realAction || realAction === "." || cbBuckets[realAction]) return; // 防止只传递"on"的影响 以及禁用监听覆盖
 
 	api[toCamelCase(action)] = (args: DefaultActionListenerParams): void => {
 		cbBuckets[realAction] = {
