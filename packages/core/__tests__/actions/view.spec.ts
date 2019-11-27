@@ -1,6 +1,6 @@
 "use strict";
 
-import JSApi, { HostInvokePayload, ShareScopeItem } from "../../lib/index";
+import JSApi, { HostInvokePayload, ShareScopeItem, ViewNavbarButtonConfig } from "../../lib/index";
 
 describe("JSApi", () => {
 	let payloadData: HostInvokePayload;
@@ -55,5 +55,35 @@ describe("JSApi", () => {
 
 		expect(payloadData.action).toBe("view.gotoNative");
 		expect(payloadData.data).toBe(JSON.stringify(kv));
+	});
+
+	it(" `view.rotateScreen` ", done => {
+		JSApi.view.rotateScreen();
+		expect(payloadData.action).toBe("view.rotateScreen");
+
+		JSApi.view.rotateScreen((isLandScope: boolean) => {
+			expect(isLandScope).toBe(true);
+			done();
+		});
+
+		JSApi.invokeH5(payloadData.callbackid, "true");
+	});
+
+	it(" `view.setNavbarButton` ", done => {
+		const kv = {
+			position: "left",
+			index: 0,
+			text: "测试"
+		} as ViewNavbarButtonConfig;
+
+		JSApi.view.setNavbarButton(kv);
+		expect(payloadData.action).toBe("view.setNavbarButton");
+
+		JSApi.view.setNavbarButton(kv, (res: any) => {
+			expect(res).toBe(true);
+			done();
+		});
+
+		JSApi.invokeH5(payloadData.callbackid, "true");
 	});
 });

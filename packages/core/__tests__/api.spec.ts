@@ -23,7 +23,7 @@ describe("JSApi", () => {
 			errInfo = err;
 		});
 
-		JSApi.onH5InvokeDebug = (action: string, data?: string, err?: Error): void => {
+		JSApi.debug = <T>(action: string, data?: T, err?: Error): void => {
 			debugInfo = { action, data, err };
 		};
 	});
@@ -93,6 +93,11 @@ describe("JSApi", () => {
 		JSApi.invokeH5("unit.test", "ok");
 	});
 
+	it(" `JSApi.on` with '.'", () => {
+		JSApi.on(".");
+		expect(JSApi).not.toHaveProperty(".");
+	});
+
 	it(" `JSApi.wrap` ", done => {
 		JSApi.wrap("unit.test", (text: string) => ({ text }));
 
@@ -121,7 +126,7 @@ describe("JSApi", () => {
 		JSApi.invokeH5(payloadData.callbackid, "");
 	});
 
-	it(" `JSApi.onH5InvokeDebug` ", () => {
+	it(" `JSApi.debug` ", () => {
 		JSApi.onViewBack({});
 
 		JSApi.invokeH5("view.back");
