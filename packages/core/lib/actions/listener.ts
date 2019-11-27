@@ -8,7 +8,7 @@ export interface ActionListenerParams<T> {
 	 * @template T 返回的数据类型
 	 * @param {T} arg 返回的数据
 	 */
-	success(arg?: T): void;
+	success?(arg?: T): void;
 	/**
 	 * 出现错误时的回调
 	 *
