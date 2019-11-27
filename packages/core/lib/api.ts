@@ -1,8 +1,19 @@
-import { toCamelCase, isString } from "./utils";
+import { toCamelCase } from "./utils";
 
 export type KV<T> = { [key: string]: T };
 
-const cbBuckets: KV<Function> = {};
+export interface CbBucketValue {
+	/**
+	 * 类型是否是H5通知宿主
+	 */
+	t: boolean;
+	/**
+	 * 实际的回调处理
+	 */
+	cb: Function;
+}
+
+const cbBuckets: KV<CbBucketValue> = {};
 
 export const api: KV<any> = {};
 
@@ -27,7 +38,11 @@ function createCbId(action: string): string {
 export function notifyHost(action: string, params: KV<any>, cb?: Function): void {
 	let callbackid = "";
 
-	cb && (cbBuckets[(callbackid = createCbId(action))] = cb);
+	cb &&
+		(cbBuckets[(callbackid = createCbId(action))] = {
+			t: !0,
+			cb
+		});
 
 	const data = params ? JSON.stringify(params) : "";
 
@@ -46,28 +61,32 @@ export function notifyHost(action: string, params: KV<any>, cb?: Function): void
  * @export
  * @param {string} actionOrCbId 操作名称或者回调id
  * @param {string} dataJSON json数据串
+ * @param {Error} [err] 异常信息
  * @returns
  */
-export function invokeH5(actionOrCbId: string, dataJSON: string): void {
+export function invokeH5(actionOrCbId: string, dataJSON?: string, err?: Error): void {
 	if (!actionOrCbId) return;
 
-	const cb = cbBuckets[actionOrCbId];
+	const cbValue = cbBuckets[actionOrCbId];
 
-	if (!cb) return;
+	if (!cbValue) return;
 
-	api.onH5InvokeDebug && api.onH5InvokeDebug(actionOrCbId, dataJSON);
+	api.onH5InvokeDebug && api.onH5InvokeDebug(actionOrCbId, dataJSON, err);
 
-	if (!dataJSON) return cb();
-
-	let data;
-
-	try {
-		data = JSON.parse(dataJSON);
-	} catch {
-		data = isString(dataJSON) ? dataJSON : {};
+	let data = dataJSON || "";
+	if (cbValue.t && dataJSON) {
+		try {
+			data = JSON.parse(dataJSON);
+		} catch {
+			data = dataJSON;
+		}
 	}
+	cbValue.cb(data, err);
 
-	cb(data);
+	if (cbValue.t) {
+		// 优化callbackid模式下的多余内存占用: 用完即删
+		delete cbBuckets[actionOrCbId];
+	}
 }
 
 /**
@@ -123,27 +142,28 @@ export function bindListener(action: string): void {
 	if (!realAction || cbBuckets[realAction]) return; // 防止只传递"on"的影响 以及禁用监听覆盖
 
 	api[toCamelCase(action)] = (args: any): void => {
-		cbBuckets[realAction] = (dataStr?: string, err?: Error): void => {
-			if (err) {
-				args.error && args.error(err);
-				return;
+		cbBuckets[realAction] = {
+			t: false,
+			cb: (dataStr?: string, err?: Error): void => {
+				if (err) {
+					args.error && args.error(err);
+					return;
+				}
+
+				if (!dataStr) return args.success && args.success();
+
+				let data;
+				try {
+					data = JSON.parse(dataStr);
+				} catch {
+					data = dataStr;
+				}
+				args.success && args.success(data);
 			}
-
-			if (!dataStr) return args.success && args.success();
-
-			let data;
-			try {
-				data = JSON.parse(dataStr);
-			} catch (ex) {
-				args.error && args.error(ex);
-				data = {};
-			}
-
-			args.success && args.success(data);
 		};
 	};
 }
 
-export function registerAction(action: string, fn: Function): void {
-	cbBuckets[action] = fn;
+export function registerAction(action: string, cb: Function): void {
+	cbBuckets[action] = { t: !0, cb };
 }
