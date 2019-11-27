@@ -156,9 +156,9 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	/**
 	 * 宿主调用H5action时候的调试
 	 *
-	 * @param {string} action 操作名称
-	 * @param {string} [data] 携带的数据
+	 * @param {string} action 操作名`称
+	 * @param {T} [data] 携带的数据
 	 * @param {Error} [err] 携带的异常信息
 	 */
-	onH5InvokeDebug(action: string, data?: string, err?: Error): void;
+	debug<T>(action: string, data?: T, err?: Error): void;
 }
