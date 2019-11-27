@@ -8,6 +8,9 @@ module.exports = {
 	transform: {
 		"^.+\\.(ts|tsx)$": "ts-jest"
 	},
-	testMatch: ["**/test/**/*.test.(ts|js)"],
-	testEnvironment: "node"
+	testMatch: ["**/__tests__/**/*.(test|spec).(ts|js)"],
+	testEnvironmentOptions: {
+		userAgent:
+			"Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
+	}
 };
