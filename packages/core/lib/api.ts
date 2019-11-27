@@ -1,4 +1,5 @@
 import { toCamelCase } from "./utils";
+import { DefaultActionListenerParams } from "./actions/listener";
 
 export type KV<T> = { [key: string]: T };
 
@@ -44,11 +45,9 @@ export function notifyHost(action: string, params: KV<any>, cb?: Function): void
 			cb
 		});
 
-	const data = params ? JSON.stringify(params) : "";
-
 	const payload = {
 		action,
-		data,
+		data: JSON.stringify(params),
 		callbackid
 	};
 
@@ -105,21 +104,17 @@ export function wrap(action: string, handler: Function): void {
 		return;
 	}
 
-	let name = names.shift() || "",
+	let name: string | undefined = names.shift(),
 		kv;
 
-	if (!kv) {
+	if (!kv && name) {
 		kv = api[name] || (api[name] = {});
-		name = names.shift() || "";
+		name = names.shift();
 	}
 
 	while (!!name) {
-		if (!kv[name]) {
-			kv[name] = names.length === 0 ? handler : (kv = {});
-		} else {
-			kv = kv[name];
-		}
-		name = names.shift() || "";
+		kv[name] = names.length === 0 ? handler : (kv = {});
+		name = names.shift();
 	}
 }
 
@@ -131,17 +126,15 @@ export function wrap(action: string, handler: Function): void {
  * @returns {void}
  */
 export function bindListener(action: string): void {
-	if (!action.startsWith("on")) return;
-
 	const actions = action.split(".");
 
 	actions.shift();
 
 	const realAction = actions.join(".");
 
-	if (!realAction || cbBuckets[realAction]) return; // 防止只传递"on"的影响 以及禁用监听覆盖
+	if (!realAction || (cbBuckets[realAction] && !cbBuckets[realAction].t)) return; // 防止只传递"on"的影响 以及禁用监听覆盖
 
-	api[toCamelCase(action)] = (args: any): void => {
+	api[toCamelCase(action)] = (args: DefaultActionListenerParams): void => {
 		cbBuckets[realAction] = {
 			t: false,
 			cb: (dataStr?: string, err?: Error): void => {
