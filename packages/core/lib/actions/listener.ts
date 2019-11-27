@@ -55,7 +55,7 @@ export interface ActionListenerApi {
 	 *
 	 * @param {DefaultActionListenerParams} params
 	 */
-	onViewBackActive(params: DefaultActionListenerParams): void;
+	onViewBack(params: DefaultActionListenerParams): void;
 	/**
 	 * 离开当前页面时，H5的监听
 	 *
@@ -102,7 +102,7 @@ export function initListener(): void {
 	bindListener("on.device.offline");
 	bindListener("on.view.hide");
 	bindListener("on.view.show");
-	bindListener("on.view.backActive");
+	bindListener("on.view.back");
 	/**
 	 * 注册监听App通知H5的页面刷新操作
 	 */
