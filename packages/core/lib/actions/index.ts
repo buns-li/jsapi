@@ -10,7 +10,7 @@ import { UIApi, initUI } from "./ui";
 import { AuthApi, initAuth } from "./auth";
 import { DebugApi, initDebug } from "./debug";
 
-import { ActionListenerApi } from "./listener";
+import { ActionListenerApi, initListener } from "./listener";
 
 export function init(): void {
 	initGlobal();
@@ -24,6 +24,7 @@ export function init(): void {
 	initUI();
 	initAuth();
 	initDebug();
+	initListener();
 }
 
 export * from "./global";
