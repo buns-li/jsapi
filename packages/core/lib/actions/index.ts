@@ -11,6 +11,7 @@ import { AuthApi, initAuth } from "./auth";
 import { DebugApi, initDebug } from "./debug";
 
 import { ActionListenerApi, initListener } from "./listener";
+import { KV } from "../api";
 
 export function init(): void {
 	initGlobal();
@@ -54,7 +55,10 @@ export interface HostInvokePayload {
 	callbackid: string;
 }
 
+export type ArgsTransform = (...args: any[]) => KV<any>;
+
 export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
+	[x: string]: any;
 	/**
 	 * 设备信息类的操作
 	 *
@@ -129,18 +133,19 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	 * ```
 	 *
 	 * @param {string} action 交互操作的名称
-	 * @param {Function} handler 交互操作的回调
+	 * @param {Function} [argsTransform] 交互参数的转换函数
 	 * @returns
 	 */
-	wrap(action: string, handler: Function): void;
+	wrap(action: string, argsTransform?: ArgsTransform): JSApi;
 	/**
 	 * App内去调用H5的操作或者回调
 	 *
 	 * @param {string} actionOrCbId 操作名称或者回调id
-	 * @param {string} dataJSON json数据串
+	 * @param {string} [dataJSON] json数据串
+	 * @param {Error} [err] 异常信息
 	 * @returns
 	 */
-	invokeH5(actionOrCbId: string, dataJSON: string): void;
+	invokeH5(actionOrCbId: string, dataJSON?: string, err?: Error): void;
 	/**
 	 * 通知宿主调用操作时的监听绑定,可用于重载来执行自定义底层实现
 	 *
@@ -153,6 +158,7 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	 *
 	 * @param {string} action 操作名称
 	 * @param {string} [data] 携带的数据
+	 * @param {Error} [err] 携带的异常信息
 	 */
-	onH5InvokeDebug(action: string, data?: string): void;
+	onH5InvokeDebug(action: string, data?: string, err?: Error): void;
 }
