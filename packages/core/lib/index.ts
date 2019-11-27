@@ -1,6 +1,6 @@
-import { canUseIOSWK, isAndroid, includes } from "./utils";
-import { api, bindListener, wrap, invokeH5 } from "./api";
-import { init, JSApi, HostInvokePayload } from "./actions/index";
+import { includes, isFunction } from "./utils";
+import { api, bindListener, wrap, invokeH5, notifyHost } from "./api";
+import { init, JSApi, HostInvokePayload, ArgsTransform } from "./actions/index";
 
 const ForbiddenActions = ["on", "wrap", "invokeH5", "config", "ready", "error", "callHost"];
 
@@ -8,26 +8,40 @@ const ForbiddenActions = ["on", "wrap", "invokeH5", "config", "ready", "error", 
  * 提供给外部重载
  */
 wrap("callHost", (payload: HostInvokePayload): void => {
-	if (canUseIOSWK()) {
-		webkit &&
-			webkit.messageHandlers &&
-			webkit.messageHandlers.JSBridge &&
-			webkit.messageHandlers.JSBridge.postMessage(payload);
-	} else if (isAndroid) {
-		JSBridge && JSBridge.invoke(payload.action, payload.data, payload.callbackid);
-	}
+	window.JSBridge
+		? window.JSBridge.invoke(payload.action, payload.data, payload.callbackid)
+		: window.webkit &&
+		  window.webkit.messageHandlers &&
+		  window.webkit.messageHandlers.JSBridge &&
+		  window.webkit.messageHandlers.JSBridge.postMessage(payload);
 });
 
 const JSApi = api as JSApi;
 
 JSApi.on = function(action: string): void {
 	if (includes(ForbiddenActions, action)) {
+		JSApi.invokeH5(
+			"error",
+			JSON.stringify({
+				code: 403,
+				msg: `Error: Forbidden ${action}`
+			})
+		);
 		return;
 	}
 	bindListener(`on.${action}`);
 };
 
-JSApi.wrap = wrap;
+JSApi.wrap = function wrapFn(action: string, argsTransform?: ArgsTransform): JSApi {
+	wrap(action, (...args: any[]): void => {
+		let cb;
+		if (args && args.length && isFunction(args[args.length - 1])) {
+			cb = args.pop() as Function;
+		}
+		notifyHost(action, args && args.length && argsTransform ? argsTransform(...args) : {}, cb);
+	});
+	return JSApi;
+};
 
 JSApi.invokeH5 = invokeH5;
 
