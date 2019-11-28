@@ -10,7 +10,7 @@ enum EDevice {
 
 export function initDevice(): void {
 	wrap(EDevice.getNetworkType, (cb: NetworkTypeCallback) => notifyHost(EDevice.getNetworkType, {}, cb));
-	wrap(EDevice.scanQRCode, (cb: QRCodeScanCallback) => notifyHost(EDevice.scanQRCode, {}, cb));
+	wrap(EDevice.scanQRCode, (opt: QRCodeOption, cb: QRCodeScanCallback) => notifyHost(EDevice.scanQRCode, opt, cb));
 	wrap(EDevice.getLocation, (param: LocationParam, cb: LocationCallback) => {
 		notifyHost(EDevice.getLocation, param, cb);
 	});
