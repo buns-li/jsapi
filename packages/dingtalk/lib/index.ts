@@ -25,28 +25,22 @@ JSApi.callHost = function(payload: HostInvokePayload): void {
 	if (allowJSApiList === "*" || includes(allowJSApiList, payload.action)) {
 		actionMap[payload.action](payload);
 	} else {
-		JSApi.invokeH5(
-			"error",
-			JSON.stringify({
-				code: 403,
-				msg: `'${payload.action}' not in jsApiList config`
-			})
-		);
+		JSApi.invokeH5("error", {
+			code: 403,
+			msg: `'${payload.action}' not in jsApiList config`
+		});
 	}
 };
 
 dd.ready(() => {
-	JSApi.invokeH5("ready", "");
+	JSApi.invokeH5("ready");
 });
 
 dd.error((err: DingTalkErrorInfo) => {
-	JSApi.invokeH5(
-		"error",
-		JSON.stringify({
-			code: err.errorCode,
-			msg: err.errorMessage
-		})
-	);
+	JSApi.invokeH5("error", {
+		code: err.errorCode,
+		msg: err.errorMessage
+	});
 });
 
 export default JSApi;

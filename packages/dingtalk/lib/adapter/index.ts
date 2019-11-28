@@ -34,20 +34,17 @@ const Adapter = {
 	"audio.startRecord": (payload: HostInvokePayload): void => {
 		dd.device.audio.startRecord({
 			onSuccess() {
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, "");
+				payload.callbackid && JSApi.invokeH5(payload.callbackid);
 			},
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "audio.startRecord",
-							deepAction: "device.audio.startRecord"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "audio.startRecord",
+						deepAction: "device.audio.startRecord"
+					}
+				});
 			}
 		});
 	},
@@ -57,17 +54,14 @@ const Adapter = {
 				JSApi.invokeH5(payload.callbackid, data.result);
 			},
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "device.getNetworkType",
-							deepAction: "device.connection.getNetworkType"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "device.getNetworkType",
+						deepAction: "device.connection.getNetworkType"
+					}
+				});
 			}
 		});
 	},
@@ -77,37 +71,31 @@ const Adapter = {
 				JSApi.invokeH5(payload.callbackid, data.result);
 			},
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "device.getUUID",
-							deepAction: "device.base.getUUID"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "device.getUUID",
+						deepAction: "device.base.getUUID"
+					}
+				});
 			}
 		});
 	},
 	"device.getPhoneInfo": (payload: HostInvokePayload): void => {
 		dd.device.base.getPhoneInfo({
 			onSuccess(data: any) {
-				JSApi.invokeH5(payload.callbackid, JSON.stringify(data));
+				JSApi.invokeH5(payload.callbackid, data);
 			},
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "device.getPhoneInfo",
-							deepAction: "device.base.getPhoneInfo"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "device.getPhoneInfo",
+						deepAction: "device.base.getPhoneInfo"
+					}
+				});
 			}
 		});
 	},
@@ -116,20 +104,17 @@ const Adapter = {
 		dd.device.geolocation
 			.get(dataKV as IDeviceGeolocationGetParams)
 			.then((data: IDeviceGeolocationGetResult) => {
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, JSON.stringify(data));
+				payload.callbackid && JSApi.invokeH5(payload.callbackid, data);
 			})
 			.catch((err: DingTalkErrorInfo) => {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "device.getLocation",
-							deepAction: "device.geolocation.get"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "device.getLocation",
+						deepAction: "device.geolocation.get"
+					}
+				});
 			});
 	},
 	"dialog.showLoading": (payload: HostInvokePayload): void => {
@@ -143,17 +128,14 @@ const Adapter = {
 	"dialog.hideLoading": (): void => {
 		dd.device.notification.hidePreloader({
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "dialog.hideLoading",
-							deepAction: "device.notification.hidePreloader"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "dialog.hideLoading",
+						deepAction: "device.notification.hidePreloader"
+					}
+				});
 			}
 		});
 	},
@@ -167,20 +149,17 @@ const Adapter = {
 				buttonName: dataKV.okText
 			})
 			.then(() => {
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, "");
+				payload.callbackid && JSApi.invokeH5(payload.callbackid);
 			})
 			.catch((err: DingTalkErrorInfo) => {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "dialog.hideLoading",
-							deepAction: "device.notification.hidePreloader"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "dialog.hideLoading",
+						deepAction: "device.notification.hidePreloader"
+					}
+				});
 			});
 	},
 	"dialog.confirm": (payload: HostInvokePayload): void => {
@@ -196,26 +175,20 @@ const Adapter = {
 			})
 			.then((res: IDeviceNotificationConfirmResult) => {
 				payload.callbackid &&
-					JSApi.invokeH5(
-						payload.callbackid,
-						JSON.stringify({
-							cmd: res.buttonIndex === 0 ? "cancel" : "ok",
-							text: labels[res.buttonIndex]
-						})
-					);
+					JSApi.invokeH5(payload.callbackid, {
+						cmd: res.buttonIndex === 0 ? "cancel" : "ok",
+						text: labels[res.buttonIndex]
+					});
 			})
 			.catch((err: DingTalkErrorInfo) => {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "dialog.hideLoading",
-							deepAction: "device.notification.hidePreloader"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "dialog.hideLoading",
+						deepAction: "device.notification.hidePreloader"
+					}
+				});
 			});
 	},
 	"dialog.toast": (payload: HostInvokePayload): void => {
@@ -229,20 +202,17 @@ const Adapter = {
 				delay: dataKV.delay
 			})
 			.then(() => {
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, "");
+				payload.callbackid && JSApi.invokeH5(payload.callbackid);
 			})
 			.catch((err: DingTalkErrorInfo) => {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "dialog.toast",
-							deepAction: "device.notification.toast"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "dialog.toast",
+						deepAction: "device.notification.toast"
+					}
+				});
 			});
 	},
 	"dialog.actionSheet": (payload: HostInvokePayload): void => {
@@ -255,23 +225,17 @@ const Adapter = {
 			})
 			.then((res: IDeviceNotificationActionSheetResult) => {
 				payload.callbackid &&
-					JSApi.invokeH5(
-						payload.callbackid,
-						res.buttonIndex === -1 ? "" : JSON.stringify(dataKV.actions[res.buttonIndex])
-					);
+					JSApi.invokeH5(payload.callbackid, res.buttonIndex === -1 ? "" : dataKV.actions[res.buttonIndex]);
 			})
 			.catch((err: DingTalkErrorInfo) => {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "dialog.actionSheet",
-							deepAction: "device.notification.actionSheet"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "dialog.actionSheet",
+						deepAction: "device.notification.actionSheet"
+					}
+				});
 			});
 	},
 	"file.download": (payload: HostInvokePayload): void => {
@@ -282,23 +246,20 @@ const Adapter = {
 			name: dataKV.name, //定义下载文件名字
 			onProgress(res: any) {
 				// 文件下载进度回调
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, res ? JSON.stringify(res) : "");
+				payload.callbackid && JSApi.invokeH5(payload.callbackid, res || "");
 			},
 			onSuccess() {
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, "");
+				payload.callbackid && JSApi.invokeH5(payload.callbackid);
 			},
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "file.download",
-							deepAction: "biz.util.downloadFile"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "file.download",
+						deepAction: "biz.util.downloadFile"
+					}
+				});
 			}
 		});
 	},
@@ -311,50 +272,41 @@ const Adapter = {
 				current: dataKV.current
 			})
 			.catch((err: DingTalkErrorInfo) => {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "image.preview",
-							deepAction: "biz.util.previewImage"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "image.preview",
+						deepAction: "biz.util.previewImage"
+					}
+				});
 			});
 	},
 	"view.close": (): void => {
 		dd.biz.navigation.close({
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "view.close",
-							deepAction: "biz.navigation.close"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "view.close",
+						deepAction: "biz.navigation.close"
+					}
+				});
 			}
 		});
 	},
 	"view.back": (): void => {
 		dd.biz.navigation.goBack({
 			onFail(err: DingTalkErrorInfo) {
-				JSApi.invokeH5(
-					"error",
-					JSON.stringify({
-						code: err.errorCode,
-						msg: err.errorMessage,
-						extra: {
-							triggerAction: "view.back",
-							deepAction: "biz.navigation.goBack"
-						}
-					})
-				);
+				JSApi.invokeH5("error", {
+					code: err.errorCode,
+					msg: err.errorMessage,
+					extra: {
+						triggerAction: "view.back",
+						deepAction: "biz.navigation.goBack"
+					}
+				});
 			}
 		});
 	},
@@ -366,7 +318,7 @@ const Adapter = {
 				title: dataKV.title
 			})
 			.then(() => {
-				payload.callbackid && JSApi.invokeH5(payload.callbackid, "");
+				payload.callbackid && JSApi.invokeH5(payload.callbackid);
 			});
 	}
 } as Adapter;
