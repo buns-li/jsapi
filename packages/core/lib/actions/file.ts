@@ -50,7 +50,7 @@ export interface FileInfo {
 	extra?: any;
 }
 
-export type FileChooseCallback = (files: FileInfo) => void;
+export type FileChooseCallback = (files: FileInfo[]) => void;
 
 export interface FilePreviewParams {
 	/**
@@ -76,9 +76,9 @@ export interface FilePreviewParams {
 }
 
 /**
- * @params {string} progress 阅读进度
+ * @params {number|string} progress 阅读进度
  */
-export type FilePreviewCallback = (progress: string) => void;
+export type FilePreviewCallback = (progress?: number | string) => void;
 
 export interface FileDownloadedInfo {
 	/**
@@ -147,15 +147,12 @@ export interface FileApi {
 
 export function initFile(): void {
 	wrap(EFile.choose, (opt: FileChooseParams, cb: FileChooseCallback) =>
-		notifyHost(EFile.choose, { shouldUpload: true, count: 1, allowTypes: "*", ...opt }, cb)
+		notifyHost(EFile.choose, { allowTypes: "*", count: 1, shouldUpload: true, ...opt }, cb)
 	);
 
 	wrap(EFile.preview, (fileInfo: FilePreviewParams, cb?: FilePreviewCallback) => {
-		if (!fileInfo.ext) {
-			const extArr = fileInfo.name.split(".");
-			if (extArr.length) {
-				fileInfo.ext = extArr[extArr.length - 1];
-			}
+		if (!fileInfo.ext && ~fileInfo.name.indexOf(".")) {
+			fileInfo.ext = fileInfo.name.split(".").pop();
 		}
 		notifyHost(EFile.preview, fileInfo, cb);
 	});
