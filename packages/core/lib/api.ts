@@ -1,4 +1,4 @@
-import { toCamelCase } from "./utils";
+import { toCamelCase, isString } from "./utils";
 import { DefaultActionListenerParams } from "./actions/listener";
 
 export type KV<T> = { [key: string]: T };
@@ -65,7 +65,7 @@ export function notifyHost(action: string, params: KV<any>, cb?: Function): void
  * @param {Error} [err] 异常信息
  * @returns
  */
-export function invokeH5(actionOrCbId: string, dataJSON?: string, err?: Error): void {
+export function invokeH5(actionOrCbId: string, dataJSON?: string | KV<any>, err?: Error): void {
 	if (!actionOrCbId) return;
 
 	const cbValue = cbBuckets[actionOrCbId];
@@ -74,10 +74,10 @@ export function invokeH5(actionOrCbId: string, dataJSON?: string, err?: Error): 
 
 	api.debug && api.debug(actionOrCbId, dataJSON, err);
 
-	let data = dataJSON || "";
-	if (cbValue.t && dataJSON) {
+	let data = dataJSON;
+	if (cbValue.t && dataJSON && isString(dataJSON)) {
 		try {
-			data = JSON.parse(dataJSON);
+			data = JSON.parse(dataJSON as string);
 		} catch {
 			data = dataJSON;
 		}
