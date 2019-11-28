@@ -141,11 +141,11 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	 * App内去调用H5的操作或者回调
 	 *
 	 * @param {string} actionOrCbId 操作名称或者回调id
-	 * @param {string} [dataJSON] json数据串
+	 * @param {string|KV<any>} [dataJSON] json数据串
 	 * @param {Error} [err] 异常信息
 	 * @returns
 	 */
-	invokeH5(actionOrCbId: string, dataJSON?: string, err?: Error): void;
+	invokeH5(actionOrCbId: string, dataJSON?: string | KV<any>, err?: Error): void;
 	/**
 	 * 通知宿主调用操作时的监听绑定,可用于重载来执行自定义底层实现
 	 *
