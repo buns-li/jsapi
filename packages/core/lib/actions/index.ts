@@ -118,7 +118,7 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	 *
 	 * @param {string} action 操作名称, 请用“.”来连接
 	 */
-	on(action: string): void;
+	on(action: string): JSApi;
 	/**
 	 * 包装交互action
 	 *

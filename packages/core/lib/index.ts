@@ -18,7 +18,7 @@ wrap("callHost", (payload: HostInvokePayload): void => {
 
 const JSApi = api as JSApi;
 
-JSApi.on = function(action: string): void {
+JSApi.on = function(action: string): JSApi {
 	if (includes(ForbiddenActions, action)) {
 		JSApi.invokeH5(
 			"error",
@@ -27,9 +27,11 @@ JSApi.on = function(action: string): void {
 				msg: `Error: Forbidden ${action}`
 			})
 		);
-		return;
+	} else {
+		bindListener(`on.${action}`);
 	}
-	bindListener(`on.${action}`);
+
+	return JSApi;
 };
 
 JSApi.wrap = function wrapFn(action: string, argsTransform?: ArgsTransform): JSApi {
