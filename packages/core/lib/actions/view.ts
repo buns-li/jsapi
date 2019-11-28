@@ -19,9 +19,7 @@ export function initView(): void {
 	wrap(EView.close, () => notifyHost(EView.close, {}));
 	wrap(EView.back, () => notifyHost(EView.back, {}));
 	wrap(EView.forward, () => notifyHost(EView.forward, {}));
-	wrap(EView.goto, (url: string, title: string, query: KeyValue = {}) =>
-		notifyHost(EView.goto, { url, title, query })
-	);
+	wrap(EView.goto, (url: string, title: string, query?: KeyValue) => notifyHost(EView.goto, { url, title, query }));
 	wrap(EView.fullscreen, (flag: ViewFullscreenFlag, cb?: Function) => notifyHost(EView.fullscreen, { flag }, cb));
 	wrap(EView.setNavbarButton, (opt: ViewNavbarButtonConfig, cb?: Function) =>
 		notifyHost(EView.setNavbarButton, opt, cb)
