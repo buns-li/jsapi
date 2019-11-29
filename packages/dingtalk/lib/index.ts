@@ -21,7 +21,7 @@ JSApi.config = function config(params: AuthParams): void {
 	allowJSApiList = params.jsApiList === "*" ? [] : params.jsApiList.slice();
 };
 
-JSApi.callHost = function(payload: HostInvokePayload): void {
+JSApi.wrap("callHost", () => (payload: HostInvokePayload): void => {
 	if (allowJSApiList === "*" || includes(allowJSApiList, payload.action)) {
 		actionMap[payload.action](payload);
 	} else {
@@ -30,7 +30,7 @@ JSApi.callHost = function(payload: HostInvokePayload): void {
 			msg: `'${payload.action}' not in jsApiList config`
 		});
 	}
-};
+});
 
 dd.ready(() => {
 	JSApi.invokeH5("ready");
