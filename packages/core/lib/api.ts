@@ -18,6 +18,8 @@ const cbBuckets: KV<CbBucketValue> = {};
 
 export const api: KV<any> = {};
 
+export const _ = void 0;
+
 /**
  * 创建回调的id
  *
@@ -33,10 +35,10 @@ function createCbId(action: string): string {
  *
  * @export
  * @param {string} action 操作名称
- * @param {KV<any>} params 执行操作携带的数据
+ * @param {KV<any>} [params] 执行操作携带的数据
  * @param {Function} [cb] 操作完成后的回调
  */
-export function notifyHost(action: string, params: KV<any>, cb?: Function): void {
+export function notifyHost(action: string, params?: KV<any>, cb?: Function): void {
 	let callbackid = "";
 
 	cb &&
@@ -47,7 +49,7 @@ export function notifyHost(action: string, params: KV<any>, cb?: Function): void
 
 	const payload = {
 		action,
-		data: JSON.stringify(params),
+		data: params ? JSON.stringify(params) : "",
 		callbackid
 	};
 
@@ -94,29 +96,27 @@ export function invokeH5(actionOrCbId: string, dataJSON?: string | KV<any>, err?
  * 包装交互action
  *
  * @export
+ * @template T extends Function
  * @param {string} action 交互操作的名称
- * @param {Function} [handler] 交互操作的回调
+ * @param {T} handler 交互操作的回调
  * @returns {void}
  */
-export function wrap(action: string, handler: Function): void {
+export function wrap<T extends Function>(action: string, handler: T): void {
 	const names = action.split(".");
 
-	if (names.length === 1) {
-		api[names[0]] = handler;
+	let name: string | undefined = names.shift();
+
+	if (!name) return;
+
+	if (!names.length) {
+		api[name] = handler;
 		return;
 	}
 
-	let name: string | undefined = names.shift(),
-		kv;
+	let kv = api[name] || (api[name] = {});
 
-	if (!kv && name) {
-		kv = api[name] || (api[name] = {});
-		name = names.shift();
-	}
-
-	while (!!name) {
+	while (!!(name = names.shift())) {
 		kv[name] = names.length === 0 ? handler : (kv = {});
-		name = names.shift();
 	}
 }
 
