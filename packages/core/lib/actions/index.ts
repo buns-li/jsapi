@@ -55,58 +55,19 @@ export interface HostInvokePayload {
 	callbackid: string;
 }
 
-export type ArgsTransform = (...args: any[]) => KV<any>;
+export type JSApiFuncInvokeH5 = (actionOrCbId: string, dataJSON?: string | KV<any>, err?: Error) => void;
 
-export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
-	[x: string]: any;
-	/**
-	 * 设备信息类的操作
-	 *
-	 * @type {DeviceApi}
-	 */
-	device: DeviceApi;
-	/**
-	 * 视图类的操作
-	 *
-	 * @type {ViewApi}
-	 */
-	view: ViewApi;
-	/**
-	 * 弹出框类的操作
-	 *
-	 * @type {DialogApi}
-	 */
-	dialog: DialogApi;
-	/**
-	 * 图像类的操作
-	 *
-	 * @type {ImageApi}
-	 */
-	image: ImageApi;
-	/**
-	 * 文件类的操作
-	 *
-	 * @type {FileApi}
-	 */
-	file: FileApi;
-	/**
-	 * 视频类操作
-	 *
-	 * @type {VideoApi}
-	 */
-	video: VideoApi;
-	/**
-	 * 音频类操作
-	 *
-	 * @type {AudioApi}
-	 */
-	audio: AudioApi;
-	/**
-	 * UI类的操作
-	 *
-	 * @type {UIApi}
-	 */
-	ui: UIApi;
+export type JSApiFuncCallHost = (payload: HostInvokePayload) => void;
+
+export type JSApiFuncOn = (action: string) => JSApi;
+
+export type JSApiFuncNotifyHost = (action: string, params?: KV<any>, cb?: Function) => void;
+
+export type JSApiFuncWrapHandler = (notifyHost: JSApiFuncNotifyHost) => Function | void | undefined;
+
+export type JSApiFuncWrap = (action: string, handler: JSApiFuncWrapHandler) => JSApi;
+
+export interface ChainOutputApi {
 	/**
 	 * 注册事件名称
 	 *
@@ -118,25 +79,15 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	 *
 	 * @param {string} action 操作名称, 请用“.”来连接
 	 */
-	on(action: string): JSApi;
+	readonly on: JSApiFuncOn;
 	/**
 	 * 包装交互action
 	 *
-	 * ```js
-	 *
-	 *  JSApi.wrap("app.xxx",(a)=>{ console.log("hello "+a)});
-	 *
-	 * // then
-	 *
-	 *  JSApi.app.xxx("1") // it will output: hello 1
-	 *
-	 * ```
-	 *
 	 * @param {string} action 交互操作的名称
-	 * @param {Function} [argsTransform] 交互参数的转换函数
+	 * @param {Function} handler 处理函数
 	 * @returns
 	 */
-	wrap(action: string, argsTransform?: ArgsTransform): JSApi;
+	readonly wrap: JSApiFuncWrap;
 	/**
 	 * App内去调用H5的操作或者回调
 	 *
@@ -145,20 +96,57 @@ export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi {
 	 * @param {Error} [err] 异常信息
 	 * @returns
 	 */
-	invokeH5(actionOrCbId: string, dataJSON?: string | KV<any>, err?: Error): void;
+	readonly invokeH5: JSApiFuncInvokeH5;
+}
+
+export interface JSApi extends ShareApi, ActionListenerApi, AuthApi, DebugApi, ChainOutputApi {
+	[x: string]: any;
 	/**
-	 * 通知宿主调用操作时的监听绑定,可用于重载来执行自定义底层实现
+	 * 设备信息类的操作
 	 *
-	 * @param {HostInvokePayload} payload 调用时携带的数据
-	 * @returns
+	 * @type {DeviceApi}
 	 */
-	callHost(payload: HostInvokePayload): void;
+	readonly device: DeviceApi;
 	/**
-	 * 宿主调用H5action时候的调试
+	 * 视图类的操作
 	 *
-	 * @param {string} action 操作名`称
-	 * @param {T} [data] 携带的数据
-	 * @param {Error} [err] 携带的异常信息
+	 * @type {ViewApi}
 	 */
-	debug<T>(action: string, data?: T, err?: Error): void;
+	readonly view: ViewApi;
+	/**
+	 * 弹出框类的操作
+	 *
+	 * @type {DialogApi}
+	 */
+	readonly dialog: DialogApi;
+	/**
+	 * 图像类的操作
+	 *
+	 * @type {ImageApi}
+	 */
+	readonly image: ImageApi;
+	/**
+	 * 文件类的操作
+	 *
+	 * @type {FileApi}
+	 */
+	readonly file: FileApi;
+	/**
+	 * 视频类操作
+	 *
+	 * @type {VideoApi}
+	 */
+	readonly video: VideoApi;
+	/**
+	 * 音频类操作
+	 *
+	 * @type {AudioApi}
+	 */
+	readonly audio: AudioApi;
+	/**
+	 * UI类的操作
+	 *
+	 * @type {UIApi}
+	 */
+	readonly ui: UIApi;
 }

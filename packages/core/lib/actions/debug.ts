@@ -1,11 +1,12 @@
 import { wrap, registerAction } from "../api";
 
 enum EDebug {
-	error = "error"
+	error = "error",
+	debug = "debug"
 }
 
 export function initDebug(): void {
-	wrap(EDebug.error, (fn: Function): void => {
+	wrap(EDebug.error, (fn: FeedbackCallback): void => {
 		registerAction(EDebug.error, fn);
 	});
 }
@@ -36,6 +37,10 @@ export interface FeedbackMsgInfo {
 
 export type FeedbackCallback = (err: FeedbackMsgInfo) => void;
 
+export type FuncDebug = (action: string, data?: any, err?: Error) => void;
+
+export type FuncError = (fn: FeedbackCallback) => void;
+
 export interface DebugApi {
 	/**
 	 * 监听交互时发生的错误
@@ -43,5 +48,13 @@ export interface DebugApi {
 	 * @param {FeedbackCallback} fn
 	 * @memberof JSApi
 	 */
-	error(fn: FeedbackCallback): void;
+	readonly error: FuncError;
+	/**
+	 * 宿主调用H5action时候的调试
+	 *
+	 * @param {string} action 操作名`称
+	 * @param {T} [data] 携带的数据
+	 * @param {Error} [err] 携带的异常信息
+	 */
+	debug: FuncDebug;
 }
