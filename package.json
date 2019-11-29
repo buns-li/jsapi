@@ -7,7 +7,8 @@
 	"scripts": {
 		"build": "kuai build",
 		"lint": "prettier --write packages/**/lib/**/*.{ts,tsx,js,jsx} && eslint --fix packages/**/lib/**/*.{ts,tsx,js,jsx}",
-		"test": "jest"
+		"test": "jest",
+		"coverage":"jest --coverage"
 	},
 	"devDependencies": {
 		"@babel/core": "7.7.4",
