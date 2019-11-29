@@ -1,6 +1,6 @@
 import { ShareScopeItem } from "./view";
 
-import { wrap, notifyHost } from "../api";
+import { wrap, notifyHost, _ } from "../api";
 
 enum EGlobal {
 	// 分享
@@ -14,7 +14,7 @@ enum EGlobal {
 export function initGlobal(): void {
 	wrap(EGlobal.share, (opt: ShareParams, cb?: Function) => notifyHost(EGlobal.share, opt, cb));
 	wrap(EGlobal.sharePrepare, (opt: ShareParams) => notifyHost(EGlobal.sharePrepare, opt));
-	wrap(EGlobal.softInputOpen, (cb?: Function) => notifyHost(EGlobal.softInputOpen, {}, cb));
+	wrap(EGlobal.softInputOpen, (cb?: Function) => notifyHost(EGlobal.softInputOpen, _, cb));
 }
 
 export interface ShareObject {

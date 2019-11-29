@@ -1,4 +1,4 @@
-import { wrap, notifyHost } from "../api";
+import { wrap, notifyHost, _ } from "../api";
 
 enum EDevice {
 	getNetworkType = "device.getNetworkType",
@@ -9,13 +9,13 @@ enum EDevice {
 }
 
 export function initDevice(): void {
-	wrap(EDevice.getNetworkType, (cb: NetworkTypeCallback) => notifyHost(EDevice.getNetworkType, {}, cb));
+	wrap(EDevice.getNetworkType, (cb: NetworkTypeCallback) => notifyHost(EDevice.getNetworkType, _, cb));
 	wrap(EDevice.scanQRCode, (opt: QRCodeOption, cb: QRCodeScanCallback) => notifyHost(EDevice.scanQRCode, opt, cb));
 	wrap(EDevice.getLocation, (param: LocationParam, cb: LocationCallback) => {
 		notifyHost(EDevice.getLocation, param, cb);
 	});
-	wrap(EDevice.getUUID, (cb: UUIDCallback) => notifyHost(EDevice.getUUID, {}, cb));
-	wrap(EDevice.getPhoneInfo, (cb: PhoneInfoCallback) => notifyHost(EDevice.getPhoneInfo, {}, cb));
+	wrap(EDevice.getUUID, (cb: UUIDCallback) => notifyHost(EDevice.getUUID, _, cb));
+	wrap(EDevice.getPhoneInfo, (cb: PhoneInfoCallback) => notifyHost(EDevice.getPhoneInfo, _, cb));
 }
 
 export interface PhoneInfoParams {

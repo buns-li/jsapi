@@ -1,4 +1,4 @@
-import { wrap, notifyHost } from "../api";
+import { wrap, notifyHost, _ } from "../api";
 
 export type KeyValue = { [key: string]: any };
 
@@ -16,9 +16,9 @@ enum EView {
 }
 
 export function initView(): void {
-	wrap(EView.close, () => notifyHost(EView.close, {}));
-	wrap(EView.back, () => notifyHost(EView.back, {}));
-	wrap(EView.forward, () => notifyHost(EView.forward, {}));
+	wrap(EView.close, () => notifyHost(EView.close));
+	wrap(EView.back, () => notifyHost(EView.back));
+	wrap(EView.forward, () => notifyHost(EView.forward));
 	wrap(EView.goto, (url: string, title: string, query?: KeyValue) => notifyHost(EView.goto, { url, title, query }));
 	wrap(EView.fullscreen, (flag: ViewFullscreenFlag, cb?: Function) => notifyHost(EView.fullscreen, { flag }, cb));
 	wrap(EView.setNavbarButton, (opt: ViewNavbarButtonConfig, cb?: Function) =>
@@ -33,7 +33,7 @@ export function initView(): void {
 	});
 
 	wrap(EView.rotateScreen, (cb?: RotateScreenCallback) => {
-		notifyHost(EView.rotateScreen, {}, cb);
+		notifyHost(EView.rotateScreen, _, cb);
 	});
 }
 

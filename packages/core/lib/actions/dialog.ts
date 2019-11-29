@@ -12,7 +12,7 @@ enum EDialog {
 }
 export function initDialog(): void {
 	wrap(EDialog.showLoading, (text?: string) => notifyHost(EDialog.showLoading, { text }));
-	wrap(EDialog.hideLoading, () => notifyHost(EDialog.hideLoading, {}));
+	wrap(EDialog.hideLoading, () => notifyHost(EDialog.hideLoading));
 	wrap(EDialog.alert, (content: string | AlertParams, cb?: Function) =>
 		notifyHost(
 			EDialog.alert,
