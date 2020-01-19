@@ -1,4 +1,6 @@
 declare interface Window {
+	JSBridge?: any;
+	webkit?: any;
 	[x: string]: any;
 }
 

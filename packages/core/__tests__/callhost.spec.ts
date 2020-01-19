@@ -5,7 +5,7 @@ import JSApi, { HostInvokePayload } from "../lib/index";
 describe("JSApi.callHost", () => {
 	let payloadData: HostInvokePayload;
 	beforeAll(() => {
-		window.JSBridge = {
+		window["JSBridge"] = {
 			invoke(action: string, data: string, callbackid: string): void {
 				payloadData = {
 					action,

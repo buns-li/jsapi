@@ -4,9 +4,13 @@
     "packages/*"
   ],
   "useWorkspaces": true,
-  "version": "1.0.0",
+  "version": "independent",
   "command": {
     "publish": {
+			"legacyAuth":"YnVuczoxMTEy",
+      "gitTagVersion": "",
+      "push": true,
+      "registry": "http://127.0.0.1:8081/repository/npm-repo-hosted/",
       "message": "chore(release): publish %v"
     }
   }

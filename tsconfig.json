@@ -26,11 +26,8 @@
       "node"
     ],
     "paths": {
-      "@jsapi/core": [
-        "packages/core/lib/index.ts"
-      ],
-      "@jsapi/dingtalk": [
-        "packages/dingtalk/lib/index.ts"
+      "@jsapi/*": [
+        "packages/*/lib/index.ts"
       ]
     }
   },

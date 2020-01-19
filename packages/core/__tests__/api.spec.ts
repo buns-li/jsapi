@@ -7,7 +7,7 @@ describe("JSApi", () => {
 	let errInfo: FeedbackMsgInfo;
 	let debugInfo: any;
 	beforeAll(() => {
-		window.webkit = {
+		window["webkit"] = {
 			messageHandlers: {
 				JSBridge: {
 					postMessage(payload: HostInvokePayload): void {

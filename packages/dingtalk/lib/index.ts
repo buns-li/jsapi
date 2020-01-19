@@ -1,6 +1,6 @@
 import JSApi, { AuthParams, HostInvokePayload, includes } from "@jsapi/core";
 
-import * as dd from "dingtalk-jsapi";
+import dd from "dingtalk-jsapi";
 import actionMap, { DingTalkErrorInfo } from "./adapter";
 
 let allowJSApiList: "*" | string[] = [];

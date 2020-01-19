@@ -1,27 +1,27 @@
 {
-	"name": "@jsapi/core",
-	"version": "1.0.0",
-	"license": "MIT",
-	"module": "dist/core.esm.js",
-	"jsnext": "dist/core.mjs",
-	"main": "dist/core.cjs.js",
-	"unpkg": "dist/core.min.js",
-	"browser": "dist/core.js",
-	"types": "dist/core.d.ts",
-	"kuai": {
-		"buildOptions": {
-			"formats": [
-				"esm",
-				"cjs",
-				"global",
-				"esm-browser"
-			],
-			"external": null,
-			"onlyProd": false
-		}
-	},
-	"keywords": [
-		"@jsapi",
-		"core"
-	]
+  "name": "@jsapi/core",
+  "description": "@jsapi/core",
+  "version": "1.0.0",
+  "keywords": [
+    "core",
+    "@jsapi"
+  ],
+  "author": "buns <zpli_buns@126.com>",
+  "license": "ISC",
+  "globalName": "JSApi",
+  "unpkg": "dist/core.js",
+  "modern": "dist/core.modern.js",
+  "module": "dist/core.es.js",
+  "main": "dist/core.cjs.js",
+  "types": "dist/core.d.ts",
+  "files": [
+    "dist"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "scripts": {
+    "build": "siu build @jsapi/core"
+  }
 }

@@ -1,6 +1,6 @@
 # `@jsapi/core`
 
-> @jsapi/core
+> TODO: description
 
 ## Usage
 
