@@ -66,24 +66,23 @@ JSBridge.invoke = function(payload){
 ### `项目内安装如下`
 
 ```bash
-yarn add jsapi
+yarn add @jsapi/core 
+
+yarn add @jsapi/dingtalk
+
+yarn add @jsapi/wx
 ```
 
 ### `CDN引入`
 
-```bash
-// 普通使用
-<script src="//static.jxdangjian.com/pkgs/jsapi@{version}/jsapi.js"></script>
-
-// script module引入
-<script src="//static.jxdangjian.com/pkgs/jsapi@{version}/jsapi.esm-browser.js" type="module"/>
-```
+TODO
 
 ## `使用`
 
 npm方式引入
 
 ```javascript
+
 import JSApi from "jsapi";
 
 /**
@@ -93,11 +92,4 @@ import JSApi from "jsapi";
  */
 
 ```
-
-script脚本引入
-
-```javascript
-window.JSApi.xxxxx;
-```
-
 

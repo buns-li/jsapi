@@ -1,6 +1,6 @@
 # 重载底层实现
 
-JSApi内部提供的一个默认的重载操作接口action=`onHostInvoke`
+JSApi内部提供的一个默认的重载操作接口action=`callHost`
 
 
 如何实现兼容各端
@@ -9,7 +9,7 @@ JSApi内部提供的一个默认的重载操作接口action=`onHostInvoke`
 
 ```js
 
-JSApi.wrap("onHostInvoke",(payload)=>{
+JSApi.wrap("callHost",(payload)=>{
 
 	if(isInWxH5()){
 
