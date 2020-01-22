@@ -18,13 +18,16 @@ const ForbiddenActions = ["on", "wrap", "invokeH5", "error", "debug"];
  * 提供给外部重载
  */
 wrap<JSApiFuncCallHost>("callHost", (payload: HostInvokePayload): void => {
-	window.JSBridge
-		? window.JSBridge.invoke && window.JSBridge.invoke(payload.action, payload.data, payload.callbackid)
-		: window.webkit &&
-		  window.webkit.messageHandlers &&
-		  window.webkit.messageHandlers.JSBridge &&
-		  window.webkit.messageHandlers.JSBridge.postMessage &&
-		  window.webkit.messageHandlers.JSBridge.postMessage(payload);
+	// window.JSBridge
+	// 	? window.JSBridge.invoke && window.JSBridge.invoke(payload.action, payload.data, payload.callbackid)
+	// 	: window.webkit &&
+	// 	  window.webkit.messageHandlers &&
+	// 	  window.webkit.messageHandlers.JSBridge &&
+	// 	  window.webkit.messageHandlers.JSBridge.postMessage &&
+	// 		window.webkit.messageHandlers.JSBridge.postMessage(payload);
+
+	window.JSBridge?.invoke(payload.action, payload.data, payload.callbackid);
+	window.webkit?.messageHandlers?.JSBridge?.postMessage(payload);
 });
 
 wrap<JSApiFuncOn>(
