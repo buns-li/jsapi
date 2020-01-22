@@ -34,7 +34,7 @@ module.exports = {
 		config.output(format).exports("named");
 
 		if (dir === "dingtalk") {
-			config.output(format).globals.set("dingtalk-jsapi", "DingtalkJSApi");
+			config.output(format).globals.set("dingtalk-jsapi", "dd");
 		}
 	}
 };
